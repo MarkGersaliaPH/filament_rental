@@ -14,6 +14,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
 
@@ -21,11 +22,11 @@ class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
-    
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
-    
+
     protected static string|UnitEnum|null $navigationGroup = 'Rental Management';
-    
+
     public static function form(Schema $schema): Schema
     {
         return CustomerForm::configure($schema);
@@ -58,5 +59,12 @@ class CustomerResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
+    }
+
+    protected function handleRecordCreation(array $data): Model
+    {
+
+        dd($data);
+        return static::getModel()::create($data);
     }
 }

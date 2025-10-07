@@ -33,8 +33,7 @@ class LandlordFactory extends Factory
             'state_province' => $this->faker->state,
             'postal_code' => $this->faker->postcode,
             'country' => $this->faker->randomElement(['US', 'CA', 'GB']),
-            'company_name' => $hasCompany ? $this->faker->company : null,
-            'business_type' => $hasCompany ? $this->faker->randomElement(['company', 'llc']) : 'individual',
+            
             'tax_id' => $hasCompany ? $this->faker->numerify('##-#######') : null,
             'bank_name' => $this->faker->randomElement([
                 'Bank of America', 'Chase Bank', 'Wells Fargo', 'Citibank', 
@@ -46,25 +45,7 @@ class LandlordFactory extends Factory
             'verified_at' => function (array $attributes) {
                 return $attributes['is_verified'] ? $this->faker->dateTimeBetween('-2 years', 'now') : null;
             },
-            'contact_hours_start' => $this->faker->time('H:i:s', '10:00:00'),
-            'contact_hours_end' => $this->faker->time('H:i:s', '18:00:00'),
-            'preferred_contact_methods' => $this->faker->randomElements(
-                ['email', 'phone', 'sms', 'app'], 
-                $this->faker->numberBetween(1, 3)
-            ),
-            'self_managed' => $this->faker->boolean(80), // 80% self-managed
-            'property_manager_name' => function (array $attributes) {
-                return !$attributes['self_managed'] ? $this->faker->name : null;
-            },
-            'property_manager_phone' => function (array $attributes) {
-                return !$attributes['self_managed'] ? $this->faker->phoneNumber : null;
-            },
-            'average_rating' => $this->faker->randomFloat(2, 3.0, 5.0),
-            'total_properties' => $this->faker->numberBetween(1, 25),
-            'total_reviews' => $this->faker->numberBetween(0, 50),
-            'profile_photo' => null, // Will be handled separately if needed
-            'bio' => $this->faker->optional(0.6)->paragraph(3),
-            'admin_notes' => $this->faker->optional(0.1)->sentence,
+            
         ];
     }
 
@@ -102,8 +83,7 @@ class LandlordFactory extends Factory
     public function withCompany(): static
     {
         return $this->state(fn (array $attributes) => [
-            'company_name' => $this->faker->company,
-            'business_type' => $this->faker->randomElement(['company', 'llc']),
+            'company_name' => $this->faker->company, 
             'tax_id' => $this->faker->numerify('##-#######'),
         ]);
     }
@@ -111,8 +91,7 @@ class LandlordFactory extends Factory
     public function individual(): static
     {
         return $this->state(fn (array $attributes) => [
-            'company_name' => null,
-            'business_type' => 'individual',
+            'company_name' => null, 
             'tax_id' => null,
         ]);
     }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('property_id')->constrained()->onDelete('cascade');
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('landlord_id')->constrained()->onDelete('cascade');
 
             $table->date('start_date');
             $table->date('end_date')->nullable();

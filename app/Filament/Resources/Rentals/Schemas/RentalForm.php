@@ -70,8 +70,7 @@ class RentalForm
                         DatePicker::make('next_due_date'),
                         TextInput::make('total_amount')
                             ->label('Total Contract Amount')
-                            ->numeric()
-                            ->disabled()
+                            ->numeric() 
                             ->dehydrated()
                             ->columnSpanFull(),
                     ])->columns(2),

@@ -8,6 +8,30 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// Route::get('/', function () {
+    
+// $customer = new Buyer([
+//     'name'          => 'John Doe',
+//     'custom_fields' => [
+//         'email' => 'test@example.com',
+//     ],
+// ]);
+
+// $item = InvoiceItem::make('Rent')->pricePerUnit(2);
+
+// $item2 = InvoiceItem::make('Rent')->pricePerUnit(200);
+
+// $invoice = Invoice::make()
+//     ->buyer($customer)
+//     ->seller($customer)
+//     ->logo('images/logo.png')
+//     ->currencyCode('PHP')
+//     ->addItem($item)
+//     ->addItem($item2);
+
+// return $invoice->stream();
+// })->name('home');
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');

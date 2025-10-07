@@ -67,8 +67,7 @@ class LandlordSeeder extends Seeder
                 'first_name' => 'Premium',
                 'last_name' => 'Properties',
                 'email' => 'premium@landlords.com',
-                'company_name' => 'Premium Properties LLC',
-                'business_type' => 'llc',
+                'company_name' => 'Premium Properties LLC', 
                 'average_rating' => 4.95,
                 'total_properties' => 50,
                 'total_reviews' => 125,
@@ -110,8 +109,7 @@ class LandlordSeeder extends Seeder
         $this->command->info("Successfully created {$totalLandlords} landlords!");
         
         // Display some statistics
-        $verified = Landlord::where('is_verified', true)->count();
-        $companies = Landlord::where('business_type', '!=', 'individual')->count();
+        $verified = Landlord::where('is_verified', true)->count(); 
         $highRated = Landlord::where('average_rating', '>=', 4.0)->count();
         
         $this->command->table(

@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Invoiceable;
+use App\Traits\HasAddress;
 use Filament\Panel\Concerns\HasAvatars;
 use Filament\Panel\Concerns\HasTenancy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +17,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 class User extends Authenticatable 
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable,HasTenancy,HasAvatars;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasTenancy, HasAvatars, HasAddress;
 
     /**
      * The attributes that are mass assignable.

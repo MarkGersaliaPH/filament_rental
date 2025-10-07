@@ -2,11 +2,11 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\Filament\Components\AddressFormSection;
 use App\Models\Role;
 use Filament\Forms\Components\CheckboxList;
-use Filament\Forms\Components\DateTimePicker; 
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -50,11 +50,17 @@ class UserForm
                             ->relationship('roles', 'name')
                             ->options(Role::all()->pluck('name', 'id'))
                             ->descriptions(Role::all()->pluck('description', 'id')->toArray())
-                            
                             ->columnSpanFull(),
-                    ])->columnSpan(1),
+                    ])
+                    ->columnSpan(1),
                     
-                 
+                AddressFormSection::make(
+                    title: 'Address Information',
+                    columnSpan: 3,
+                    collapsible: true,
+                    defaultItems: 0
+                ),
+                    
             ])->columns(3);
     }
 }

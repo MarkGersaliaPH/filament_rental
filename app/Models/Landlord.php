@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasAddress;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 
 class Landlord extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasAddress;
 
     protected $fillable = [
         'user_id',

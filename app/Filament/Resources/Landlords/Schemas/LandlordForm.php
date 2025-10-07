@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Landlords\Schemas;
 
+use App\Filament\Components\AddressFormSection;
 use App\Models\Landlord;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
@@ -45,7 +46,7 @@ class LandlordForm
                                 ->required()
                                 ->unique(ignoreRecord: true)
                                 ->maxLength(255),
-                            TextInput::make('phone')  
+                            TextInput::make('phone')
                                 ->maxLength(20),
                             DatePicker::make('date_of_birth')
                                 ->label('Date of Birth')
@@ -80,23 +81,23 @@ class LandlordForm
                         ->description('Company and business-related details')
                         ->icon('heroicon-o-building-office')
                         ->schema([
-                            Select::make('business_type')
-                                ->options(Landlord::BUSINESS_TYPES)
-                                ->default('individual')
-                                ->required()
-                                ->live()
-                                ->columnSpanFull(),
+                            // Select::make('business_type')
+                            //     ->options(Landlord::BUSINESS_TYPES)
+                            //     ->default('individual')
+                            //     ->required()
+                            //     ->live()
+                            //     ->columnSpanFull(),
                             TextInput::make('company_name')
                                 ->label('Company Name')
-                                ->visible(fn ($get) => $get('business_type') !== 'individual')
+                                ->visible(fn($get) => $get('business_type') !== 'individual')
                                 ->maxLength(255),
                             TextInput::make('tax_id')
                                 ->label('Tax ID/EIN')
-                                ->visible(fn ($get) => $get('business_type') !== 'individual')
+                                ->visible(fn($get) => $get('business_type') !== 'individual')
                                 ->maxLength(50),
                         ])->columns(2),
 
-                 
+
                 ])->columnSpan(2),
 
                 Group::make()->schema([
@@ -113,12 +114,12 @@ class LandlordForm
                                 ->helperText('Is the landlord account active?'),
                             DateTimePicker::make('verified_at')
                                 ->label('Verified At')
-                                ->visible(fn ($get) => $get('is_verified'))
+                                ->visible(fn($get) => $get('is_verified'))
                                 ->disabled()
                                 ->dehydrated(),
                         ])->columns(1),
 
-                  
+
 
                     // Banking Information Section
                     Section::make('Banking Information')
@@ -171,9 +172,9 @@ class LandlordForm
                     ->icon('heroicon-o-document-text')
                     ->schema([
                         FileUpload::make('profile_photo')
-                        ->image()
-    ->avatar()
-    ->imageEditor()
+                            ->image()
+                            ->avatar()
+                            ->imageEditor()
                             ->label('Profile Photo'),
                         Textarea::make('bio')
                             ->label('Biography')
@@ -182,6 +183,20 @@ class LandlordForm
                             ->columnSpanFull(),
                     ])->columns(2)->columnSpanFull(),
 
+                           AddressFormSection::make( 
+                    title: 'Addresses',
+                    columnSpan: 3,
+                    collapsible: true,
+                    addressTypes: [
+                        'home' => 'Home',
+                        'work' => 'Work',
+                        'billing' => 'Billing',
+                        'shipping' => 'Shipping',
+                        'mailing' => 'Mailing',
+                    ],
+                    defaultItems: 0
+                ),
+                    
             ])->columns(3);
     }
 }

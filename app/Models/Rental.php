@@ -49,8 +49,7 @@ class Rental extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
-    }
-
+    } 
     public function approvedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');
@@ -101,5 +100,16 @@ class Rental extends Model
     public function getIsApprovedAttribute(): bool
     {
         return !is_null($this->approved_at);
+    }
+
+    // in Rental.php
+    public function getBuyerAttribute()
+    {
+        return $this->customer;
+    }
+
+    public function getSellerAttribute()
+    {
+        return $this->property->landlord;
     }
 }

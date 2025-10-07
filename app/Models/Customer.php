@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasAddress;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class Customer extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasAddress;
 
     /**
      * Boot method to handle model events
@@ -137,4 +138,9 @@ class Customer extends Model
     public function rental(){
         return $this->hasOne(Rental::class);
     }
+    public function userAddresses()
+{
+        return $this->hasMany(Address::class, 'addressable_id' );
+
+}
 }
