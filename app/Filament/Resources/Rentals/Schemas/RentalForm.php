@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Rentals\Schemas;
 
 use App\Models\Property;
+use App\Enums\PaymentStatus;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
@@ -41,6 +42,9 @@ class RentalForm
                             }),
                         Select::make('customer_id')
                             ->relationship('customer', 'first_name')
+                            ->required(),
+                        Select::make('landlord_id')
+                            ->relationship('landlord', 'first_name')
                             ->required(),
                     ]),
 
@@ -97,8 +101,15 @@ class RentalForm
                             ->default('pending')
                             ->required(),
                         Select::make('payment_status')
-                            ->options(['unpaid' => 'Unpaid', 'partial' => 'Partial', 'paid' => 'Paid', 'overdue' => 'Overdue'])
-                            ->default('unpaid')
+                            ->options([
+                                PaymentStatus::UnPaid->value => 'Unpaid',
+                                PaymentStatus::Partial->value => 'Partial', 
+                                PaymentStatus::Paid->value => 'Paid',
+                                PaymentStatus::Overdue->value => 'Overdue',
+                                PaymentStatus::Pending->value => 'Pending',
+                                PaymentStatus::Cancelled->value => 'Cancelled'
+                            ])
+                            ->default(PaymentStatus::UnPaid->value)
                             ->required(),
                     ]),
                     Section::make('Contract Document')->schema([

@@ -68,6 +68,14 @@ class Customer extends Model
     }
 
     /**
+     * Get the customer's full name with email for display purposes.
+     */
+    public function getFullNameWithEmailAttribute(): string
+    {
+        return "{$this->full_name} ({$this->email})";
+    }
+
+    /**
      * Get the user account associated with this customer.
      */
     public function user(): BelongsTo

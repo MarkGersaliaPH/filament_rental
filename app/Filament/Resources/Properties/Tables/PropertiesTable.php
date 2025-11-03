@@ -14,6 +14,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use App\Models\Property;
+use Filament\Actions\ViewAction;
 
 class PropertiesTable
 {
@@ -177,6 +178,7 @@ class PropertiesTable
             ->striped()
             ->recordActions([
                 EditAction::make(),
+                ViewAction::make(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

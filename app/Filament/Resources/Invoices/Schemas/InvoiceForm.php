@@ -4,11 +4,13 @@ namespace App\Filament\Resources\Invoices\Schemas;
 
 use App\Models\Rental;
 use App\Models\User;
+use App\Enums\PaymentStatus;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\MorphToSelect;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Schema;
 
 use Filament\Schemas\Components\Section;
@@ -19,7 +21,9 @@ class InvoiceForm
     {
         return $schema
             ->components([
-                Section::make('Billing Information')
+                Group::make()->columnSpan(2)
+                ->schema([
+Section::make('Billing Information')
                     ->schema([
                         MorphToSelect::make('billable')
                             ->types([
@@ -28,14 +32,14 @@ class InvoiceForm
                             ])->columnSpanFull(),
                         Select::make('bill_to_id')
                             ->label('Bill To')
-                            ->relationship('billTo', 'name')
+                            ->relationship('billTo', 'email')
                             ->required()
                             ->searchable()
                             ->preload()
                             ->columnSpan(1),
                         Select::make('bill_from_id')
                             ->label('Bill From')
-                            ->relationship('billFrom', 'name')
+                            ->relationship('billFrom', 'email')
                             ->required()
                             ->searchable()
                             ->preload()
@@ -43,10 +47,13 @@ class InvoiceForm
                     ])
                     ->columns(2)
                     ->collapsible(),
+
+
                     
                 Section::make('Invoice Details')
                     ->schema([
-                        TextInput::make('invoice_number')
+                        TextInput::make('name'),
+                         TextInput::make('invoice_number')
                             ->default(function () {
                                 $latestInvoice = \App\Models\Invoice::latest('id')->first();
                                 $nextNumber = $latestInvoice ? $latestInvoice->id + 1 : 1;
@@ -55,20 +62,8 @@ class InvoiceForm
                             })
                             ->required()
                             ->columnSpan(1),
-                        DatePicker::make('invoice_date')
-                            ->required()
-                            ->columnSpan(1),
-                        DatePicker::make('due_date')
-                            ->columnSpan(1),
-                        Select::make('status')
-                            ->options(['pending' => 'Pending', 'paid' => 'Paid', 'cancelled' => 'Cancelled'])
-                            ->default('pending')
-                            ->required()
-                            ->columnSpan(1),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
-                    
+                    ]),
+                
                 Section::make('Invoice Items')
                     ->schema([
                         Repeater::make('invoice_items')
@@ -122,13 +117,44 @@ class InvoiceForm
                             ->afterStateUpdated(function ($state, callable $set) {
                                 // Calculate total amount based on all invoice items
                                 $total = collect($state ?: [])->sum(function ($item) {
-                                    return ($item['price_per_unit'] ?? 0) * ($item['quantity'] ?? 1);
+                                    return ((int)$item['price_per_unit'] ?? 0) * ((int)$item['quantity'] ?? 1);
                                 });
-                                $set('amount', number_format($total, 2, '.', ''));
+                                $set('amount', $total);
                             }),
                     ])
                     ->collapsible()
                     ->columnSpanFull(),
+                ]),
+                Group::make()
+                ->schema([
+                    Section::make('')
+                    ->schema([
+                       
+                        Select::make('status')
+                            ->options(['pending' => 'Pending', 'paid' => 'Paid', 'cancelled' => 'Cancelled'])
+                            ->default('pending')
+                            ->required()
+                            ->columnSpan(1),
+                        Select::make('payment_status')
+                            ->options([
+                                PaymentStatus::UnPaid->value => 'Unpaid',
+                                PaymentStatus::Partial->value => 'Partial', 
+                                PaymentStatus::Paid->value => 'Paid',
+                                PaymentStatus::Overdue->value => 'Overdue',
+                                PaymentStatus::Pending->value => 'Pending',
+                                PaymentStatus::Cancelled->value => 'Cancelled'
+                            ])
+                            ->default(PaymentStatus::Pending->value)
+                            ->required()
+                            ->columnSpan(1),
+                        DatePicker::make('invoice_date')
+                            ->required()
+                            ->columnSpan(1),
+                        DatePicker::make('due_date')
+                            ->columnSpan(1),
+                    ])
+                    ->collapsible(),
+                    
                     
                 Section::make('Summary')
                     ->schema([
@@ -141,7 +167,10 @@ class InvoiceForm
                             ->dehydrated(true),
                     ])
                     ->columnSpanFull()
-                    ->collapsible(),
-            ]);
+                    ->collapsible()
+                ])->columnSpan(1),
+                
+                
+            ])->columns(3);
     }
 }

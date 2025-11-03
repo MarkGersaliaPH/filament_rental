@@ -2,11 +2,17 @@
 
 namespace App\Filament\Resources\Invoices\Tables;
 
+use App\Models\Invoice;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\RichEditor\TextColor;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Hugomyb\FilamentMediaAction\Actions\MediaAction;
 use Illuminate\Support\Facades\Storage;
 
 class InvoicesTable
@@ -17,10 +23,7 @@ class InvoicesTable
             ->recordUrl(null) // disable automatic redirection
 
             ->columns([
-                TextColumn::make('file_path')
-                    ->label('File')   
-                    ->urL("Asdasdasd")
-                    ->icon('heroicon-o-document-text'),
+                TextColumn::make('name'),
                 TextColumn::make('invoice_number')
                     ->searchable(),
                 TextColumn::make('amount')
@@ -34,8 +37,17 @@ class InvoicesTable
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge(),
-                TextColumn::make('file_path')
-                    ->searchable(),
+                TextColumn::make('payment_status')
+                    ->badge()
+                    ->color(fn($state) => match ($state) {
+                        'paid' => 'success',
+                        'pending' => 'warning',
+                        'overdue' => 'danger',
+                        'unpaid' => 'gray',
+                        'partial' => 'info',
+                        'cancelled' => 'secondary',
+                        default => 'gray'
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -49,7 +61,16 @@ class InvoicesTable
                 //
             ])
             ->recordActions([
+                MediaAction::make('View Invoice File') 
+                    ->icon('heroicon-o-eye')
+                    ->media(fn($record) => $record->file_path)
+                    ->autoplay(),
+                // Action::make('View File')
+                //     ->url(fn (Invoice $record): string => "$record->file_path")
+                //     ->icon(Heroicon::Document)
+                //     ->openUrlInNewTab(),
                 EditAction::make(),
+                ViewAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

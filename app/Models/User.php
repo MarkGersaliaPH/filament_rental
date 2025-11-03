@@ -146,4 +146,118 @@ class User extends Authenticatable
     {
         return $this->hasRole('Landlord');
     }
+
+    /**
+     * Get the user's name with email for display purposes.
+     */
+    public function getNameWithEmailAttribute(): string
+    {
+        return "{$this->name} ({$this->email})";
+    }
+
+    /**
+     * Get the user's full address based on their role.
+     * Returns address from Customer if user is a Renter,
+     * or from Landlord if user is a Landlord.
+     * 
+     * @param string $type Address type ('primary', 'billing', 'shipping', 'mailing')
+     * @return string|null
+     */
+    public function getRoleBasedFullAddress(string $type = 'primary'): ?string
+    {
+        // Check if user is a Renter and has a Customer profile
+        if ($this->isRenter() && $this->customer) {
+            return $this->customer->getFullAddress($type);
+        }
+        
+        // Check if user is a Landlord and has a Landlord profile
+        if ($this->isLandlord() && $this->landlord) {
+            return $this->landlord->getFullAddress($type);
+        }
+        
+        // Fallback: return user's own address if they have the HasAddress trait
+        if (method_exists($this, 'getFullAddress')) {
+            return $this->getFullAddress($type);
+        }
+        
+        return null;
+    }
+
+    /**
+     * Get the user's formatted address based on their role.
+     * Returns formatted address from Customer if user is a Renter,
+     * or from Landlord if user is a Landlord.
+     * 
+     * @param string $type Address type ('primary', 'billing', 'shipping', 'mailing')
+     * @param string $format Format type ('full', 'short', 'single_line')
+     * @return string|null
+     */
+    public function getRoleBasedFormattedAddress(string $type = 'primary', string $format = 'full'): ?string
+    {
+        // Check if user is a Renter and has a Customer profile
+        if ($this->isRenter() && $this->customer) {
+            return $this->customer->getFormattedAddress($type);
+        }
+        
+        // Check if user is a Landlord and has a Landlord profile  
+        if ($this->isLandlord() && $this->landlord) {
+            return $this->landlord->getFormattedAddress($type);
+        }
+        
+        // Fallback: return user's own address if they have the HasAddress trait
+        if (method_exists($this, 'getFormattedAddress')) {
+            return $this->getFormattedAddress($type);
+        }
+        
+        return null;
+    }
+
+    /**
+     * Get the user's profile model based on their primary role.
+     * Returns Customer model if user is a Renter,
+     * or Landlord model if user is a Landlord.
+     * 
+     * @return Customer|Landlord|null
+     */
+    public function getRoleBasedProfile()
+    {
+        // Check if user is a Renter and has a Customer profile
+        if ($this->isRenter() && $this->customer) {
+            return $this->customer;
+        }
+        
+        // Check if user is a Landlord and has a Landlord profile
+        if ($this->isLandlord() && $this->landlord) {
+            return $this->landlord;
+        }
+        
+        return null;
+    }
+
+    /**
+     * Helper method to get the primary role name for this user.
+     * Prioritizes Landlord > Renter > Employee > Admin
+     * 
+     * @return string|null
+     */
+    public function getPrimaryRoleName(): ?string
+    {
+        if ($this->isLandlord()) {
+            return 'Landlord';
+        }
+        
+        if ($this->isRenter()) {
+            return 'Renter';
+        }
+        
+        if ($this->isEmployee()) {
+            return 'Employee';
+        }
+        
+        if ($this->isAdmin()) {
+            return 'Admin';
+        }
+        
+        return null;
+    }
 }

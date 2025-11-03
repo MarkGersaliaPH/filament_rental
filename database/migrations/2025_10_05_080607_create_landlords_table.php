@@ -23,13 +23,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->date('date_of_birth')->nullable();
-            
-            // Contact Address
-            $table->string('address');
-            $table->string('city');
-            $table->string('state_province')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->string('country')->default('US');
+             
             
             // Business Information (optional)
             $table->string('company_name')->nullable();
@@ -58,8 +52,7 @@ return new class extends Migration
             $table->timestamps();
             
             // Essential indexes
-            $table->index(['is_active', 'is_verified']);
-            $table->index(['city', 'state_province']);
+            $table->index(['is_active', 'is_verified']); 
             $table->index(['average_rating']);
         });
     }

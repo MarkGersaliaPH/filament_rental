@@ -79,15 +79,15 @@ class RecentActivitiesWidget extends BaseWidget
                 ->money('USD')
                 ->sortable(),
 
-            TextColumn::make('payment_status')
-                ->label('Payment')
-                ->badge()
-                ->color(fn (?string $state): string => match ($state) {
-                    'paid' => 'success',
-                    'pending' => 'warning',
-                    'overdue' => 'danger',
-                    default => 'gray',
-                }),
+            // TextColumn::make('payment_status')
+            //     ->label('Payment')
+            //     ->badge()
+            //     ->color(fn (?string $state): string => match ($state) {
+            //         'paid' => 'success',
+            //         'pending' => 'warning',
+            //         'overdue' => 'danger',
+            //         default => 'gray',
+            //     }),
         ];
     }
 

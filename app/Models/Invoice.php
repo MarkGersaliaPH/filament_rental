@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentStatus;
 use Illuminate\Database\Eloquent\Model;
+use LaravelDaily\Invoices\Classes\Seller;
 use LaravelDaily\Invoices\Classes\Buyer;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
 use LaravelDaily\Invoices\Invoice as InvoicePackage;
@@ -20,14 +22,21 @@ class Invoice extends Model
         'invoice_date',
         'due_date',
         'status',
+        'payment_status',
         'file_path',
         'invoice_items',
+        'name'
     ];
 
     protected $casts = [
         'invoice_items' => 'array',
         'invoice_date' => 'date',
         'due_date' => 'date',
+        'payment_status' => PaymentStatus::class,
+    ];
+
+    protected $InvoiceName = [
+        Rental::class => 'Rental Invoice',
     ];
 
     public function billable()
@@ -43,43 +52,11 @@ class Invoice extends Model
                 $calculatedAmount = collect($invoice->invoice_items)->sum(function ($item) {
                     return ($item['price_per_unit'] ?? 0) * ($item['quantity'] ?? 1);
                 });
-                
+
                 // Only update if the calculated amount differs from current amount
                 if ($calculatedAmount != $invoice->amount) {
                     $invoice->amount = $calculatedAmount;
                 }
-                
-            }
-        });
-        
-        static::created(function ($invoice) {
-            if ($invoice->billable_type == Rental::class) {
-                // send email to customer
-                dd($invoice->billable->property->landlord); 
-
-                $customer = new Buyer([
-                    'name'          => $invoice->billable->customer->first_name . ' ' . $invoice->billable->customer->last_name,
-                    'custom_fields' => [
-                        'email' => $invoice->billable->customer->email,
-                        'phone' => $invoice->billable->customer->phone,
-                        
-                    ],
-                    'address'=> $invoice->billable->customer->getFormattedAddress()
-                ]);
-
-                 $seller = new Buyer([
-                    'name'          => $invoice->billable->landlord->full_name,
-                    'custom_fields' => [
-                        'email' => $invoice->billable->landlord->email,
-                        'phone' => $invoice->billable->landlord->phone,
-                        
-                    ],
-                    'address'=> $invoice->billable->landlord->getFormattedAddress()
-                ]);
-
-                dd($customer,$seller);
-                $invoice->file_path = $invoice->generateInvoice($customer,$seller);
-                $invoice->save();
             }
         });
     }
@@ -93,13 +70,19 @@ class Invoice extends Model
         return $this->belongsTo(User::class, 'bill_from_id');
     }
 
-    public function generateInvoice($customer,$seller)
-    {
+    public function payments(){
+        return $this->hasMany(Payment::class);
+    }
+
+    public function generateInvoice($customer, $seller)
+    { 
         $invoice = InvoicePackage::make()
             ->buyer($customer)
+            ->name($this->name)
+            ->status($this->payment_status->value)
             ->seller($seller)
             ->logo('images/logo.png')
-            ->filename("public/invoices/".$this->invoice_number)
+            ->filename("public/invoices/" . $this->invoice_number)
             ->currencyCode('PHP');
 
         // Add items from invoice_items field
@@ -107,7 +90,7 @@ class Invoice extends Model
             foreach ($this->invoice_items as $item) {
                 $invoiceItem = InvoiceItem::make($item['name'])
                     ->pricePerUnit($item['price_per_unit'])
-                    ->quantity($item['quantity'] ?? 1); 
+                    ->quantity($item['quantity'] ?? 1);
                 $invoice->addItem($invoiceItem);
             }
         }

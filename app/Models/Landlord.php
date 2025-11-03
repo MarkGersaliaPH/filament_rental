@@ -152,21 +152,7 @@ class Landlord extends Model
     public function getDisplayNameAttribute(): string
     {
         return $this->company_name ?: $this->full_name;
-    }
-
-    public function getFullAddressAttribute(): string
-    {
-        $parts = array_filter([
-            $this->address,
-            $this->city,
-            $this->state_province,
-            $this->postal_code,
-            $this->country !== 'US' ? $this->country : null,
-        ]);
-
-        return implode(', ', $parts);
-    }
-
+    } 
     public function getActivePropertiesCountAttribute(): int
     {
         return $this->properties()->where('status', 'available')->count();

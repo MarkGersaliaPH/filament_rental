@@ -28,6 +28,8 @@ class PropertyForm
         return $schema
             ->components([
                 Wizard::make()
+                    ->submitAction(new HtmlString('<button type="submit">Submit</button>'))
+                    ->skippable()
                     ->steps([
                     Step::make('Basic Information')
                         ->completedIcon(Heroicon::HandThumbUp)

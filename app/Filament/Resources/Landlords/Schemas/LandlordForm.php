@@ -53,29 +53,7 @@ class LandlordForm
                                 ->maxDate(now()->subYears(18))
                                 ->displayFormat('Y-m-d'),
                         ])->columns(2),
-
-                    // Address Information Section
-                    Section::make('Address Information')
-                        ->description('Physical address and location details')
-                        ->icon('heroicon-o-map-pin')
-                        ->schema([
-                            TextInput::make('address')
-                                ->label('Street Address')
-                                ->maxLength(255)
-                                ->columnSpanFull(),
-                            TextInput::make('city')
-                                ->maxLength(100),
-                            TextInput::make('state_province')
-                                ->label('State/Province')
-                                ->maxLength(100),
-                            TextInput::make('postal_code')
-                                ->label('Postal Code')
-                                ->maxLength(20),
-                            TextInput::make('country')
-                                ->default('US')
-                                ->maxLength(10),
-                        ])->columns(2),
-
+ 
                     // Business Information Section
                     Section::make('Business Information')
                         ->description('Company and business-related details')
@@ -97,6 +75,18 @@ class LandlordForm
                                 ->maxLength(50),
                         ])->columns(2),
 
+ // Banking Information Section
+                    Section::make('Banking Information')
+                        ->description('Payment and banking details')
+                        ->icon('heroicon-o-credit-card')
+                        ->schema([
+                            TextInput::make('bank_name')
+                                ->label('Bank Name')
+                                ->maxLength(255),
+                            TextInput::make('account_holder_name')
+                                ->label('Account Holder Name')
+                                ->maxLength(255),
+                        ])->columns(1),
 
                 ])->columnSpan(2),
 
@@ -120,20 +110,24 @@ class LandlordForm
                         ])->columns(1),
 
 
+   // Profile Section - Full Width
+                Section::make('Profile & Notes')
+                    ->description('Additional profile information')
+                    ->icon('heroicon-o-document-text')
+                    ->schema([
+                        FileUpload::make('profile_photo')
+                            ->image()
+                            ->avatar()
+                            ->imageEditor()
+                            ->label('Profile Photo'),
+                        Textarea::make('bio')
+                            ->label('Biography')
+                            ->rows(3)
+                            ->maxLength(1000)
+                            ->columnSpanFull(),
+                    ])->columns(2)->columnSpanFull(),
 
-                    // Banking Information Section
-                    Section::make('Banking Information')
-                        ->description('Payment and banking details')
-                        ->icon('heroicon-o-credit-card')
-                        ->schema([
-                            TextInput::make('bank_name')
-                                ->label('Bank Name')
-                                ->maxLength(255),
-                            TextInput::make('account_holder_name')
-                                ->label('Account Holder Name')
-                                ->maxLength(255),
-                        ])->columns(1),
-
+                       
                     // Statistics Section (from database)
                     Section::make('Statistics')
                         ->description('Performance metrics and ratings')
@@ -165,25 +159,7 @@ class LandlordForm
                         ])->columns(1),
 
                 ])->columnSpan(1),
-
-                // Profile Section - Full Width
-                Section::make('Profile & Notes')
-                    ->description('Additional profile information')
-                    ->icon('heroicon-o-document-text')
-                    ->schema([
-                        FileUpload::make('profile_photo')
-                            ->image()
-                            ->avatar()
-                            ->imageEditor()
-                            ->label('Profile Photo'),
-                        Textarea::make('bio')
-                            ->label('Biography')
-                            ->rows(3)
-                            ->maxLength(1000)
-                            ->columnSpanFull(),
-                    ])->columns(2)->columnSpanFull(),
-
-                           AddressFormSection::make( 
+    AddressFormSection::make( 
                     title: 'Addresses',
                     columnSpan: 3,
                     collapsible: true,
@@ -197,6 +173,8 @@ class LandlordForm
                     defaultItems: 0
                 ),
                     
+                   
+             
             ])->columns(3);
     }
 }

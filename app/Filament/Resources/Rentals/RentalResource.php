@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Rentals;
 use App\Filament\Resources\Rentals\Pages\CreateRental;
 use App\Filament\Resources\Rentals\Pages\EditRental;
 use App\Filament\Resources\Rentals\Pages\ListRentals;
+use App\Filament\Resources\Rentals\RelationManagers\InvoicesRelationManager;
 use App\Filament\Resources\Rentals\Schemas\RentalForm;
 use App\Filament\Resources\Rentals\Tables\RentalsTable;
 use App\Models\Rental;
@@ -35,7 +36,7 @@ class RentalResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            InvoicesRelationManager::class,
         ];
     }
 

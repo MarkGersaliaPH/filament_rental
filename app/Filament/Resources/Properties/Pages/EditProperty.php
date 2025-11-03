@@ -14,23 +14,33 @@ class EditProperty extends EditRecord
 {
     protected static string $resource = PropertyResource::class;
 
+    // protected function getHeaderActions(): array
+    // {
+    //     return [
+    //         Action::make('save')
+    //         ->label(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
+    //         ->submit('save')
+    //         ->action('save')
+    //         ->keyBindings(['mod+s']),
+    //           Action::make('cancel')
+    //         ->label('Cancel')
+    //         ->color('secondary')
+    //         ->icon('heroicon-o-x-mark')
+    //         ->url($this->getResource()::getUrl('index')), // redirect to table
+    //         DeleteAction::make(),
+    //         ForceDeleteAction::make(),
+    //         RestoreAction::make(),
+    //     ];
+    // }
+
     protected function getHeaderActions(): array
     {
-        return [
-            Action::make('save')
-            ->label(__('filament-panels::resources/pages/edit-record.form.actions.save.label'))
-            ->submit('save')
-            ->action('save')
-            ->keyBindings(['mod+s']),
-        Action::make('cancel')
-            ->label('Cancel')
-            ->color('secondary')
-            ->icon('heroicon-o-x-mark')
-            ->url($this->getResource()::getUrl('index')), // redirect to table
-            DeleteAction::make(),
-            ForceDeleteAction::make(),
-            RestoreAction::make(),
-        ];
+        return [ ];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [];
     }
 
       // remove the default footer actions (Create / Cancel)

@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentStatus;
+use App\Services\InvoiceGenerationService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Rental extends Model
 {
@@ -13,6 +16,7 @@ class Rental extends Model
     protected $fillable = [
         'property_id',
         'customer_id',
+        'landlord_id',
         'start_date',
         'end_date',
         'rent_amount',
@@ -38,6 +42,7 @@ class Rental extends Model
         'total_amount' => 'decimal:2',
         'approved_at' => 'timestamp',
         'terminated_at' => 'timestamp',
+        'payment_status' => PaymentStatus::class,
     ];
 
     // Relationships
@@ -50,9 +55,19 @@ class Rental extends Model
     {
         return $this->belongsTo(Customer::class);
     } 
+
+    public function landlord(): BelongsTo
+    {
+        return $this->belongsTo(Landlord::class);
+    } 
     public function approvedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function invoices(): MorphMany
+    {
+        return $this->morphMany(Invoice::class, 'billable');
     }
 
     // Scopes
@@ -68,7 +83,7 @@ class Rental extends Model
 
     public function scopeOverdue($query)
     {
-        return $query->where('payment_status', 'overdue');
+        return $query->where('payment_status', PaymentStatus::Overdue);
     }
 
     public function scopeApproved($query)
@@ -89,7 +104,7 @@ class Rental extends Model
 
     public function getIsOverdueAttribute(): bool
     {
-        return $this->payment_status === 'overdue';
+        return $this->payment_status === PaymentStatus::Overdue;
     }
 
     public function getRemainingBalanceAttribute(): float
@@ -110,6 +125,38 @@ class Rental extends Model
 
     public function getSellerAttribute()
     {
-        return $this->property->landlord;
+        return $this->landlord;
+    }
+
+    /**
+     * Generate an invoice for this rental using the InvoiceGenerationService.
+     * 
+     * @param array $options Additional options for invoice generation
+     * @return Invoice
+     * @throws \Exception
+     */
+    public function generateInvoice(array $options = []): Invoice
+    {
+        return InvoiceGenerationService::generateForRental($this, $options);
+    }
+
+    /**
+     * Check if this rental has any invoices.
+     * 
+     * @return bool
+     */
+    public function hasInvoices(): bool
+    {
+        return InvoiceGenerationService::modelHasInvoices($this);
+    }
+
+    /**
+     * Get all invoices for this rental.
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getInvoices()
+    {
+        return InvoiceGenerationService::getModelInvoices($this);
     }
 }

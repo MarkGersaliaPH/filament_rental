@@ -25,6 +25,9 @@ class RentalsTable
                 TextColumn::make('rent_amount')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('invoice_count')
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('security_deposit')
                     ->numeric()
                     ->sortable(),
