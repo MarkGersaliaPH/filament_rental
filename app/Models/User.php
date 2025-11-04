@@ -260,4 +260,8 @@ class User extends Authenticatable
         
         return null;
     }
+
+    public static function search($search){
+        return self::where('name','like','%'.$search.'%');
+    }
 }

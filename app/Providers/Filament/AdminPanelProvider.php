@@ -84,7 +84,7 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarFullyCollapsibleOnDesktop()
             // ->topbar(false)
 
-            ->font('Roboto')
+            ->font('Inter')
             // ->scale()
 
         ;
