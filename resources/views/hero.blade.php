@@ -1,88 +1,77 @@
-<!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
-<div class="bg-gray-900">
-  <header class="absolute inset-x-0 top-0 z-50">
-    <nav aria-label="Global" class="flex items-center justify-between p-6 lg:px-8">
-      <div class="flex lg:flex-1">
-        <a href="#" class="-m-1.5 p-1.5">
-          <span class="sr-only">Your Company</span>
-          <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="" class="h-8 w-auto" />
-        </a>
-      </div>
-      <div class="flex lg:hidden">
-        <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-200">
-          <span class="sr-only">Open main menu</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
-            <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-      <div class="hidden lg:flex lg:gap-x-12">
-        <a href="#" class="text-sm/6 font-semibold text-white">Product</a>
-        <a href="#" class="text-sm/6 font-semibold text-white">Features</a>
-        <a href="#" class="text-sm/6 font-semibold text-white">Marketplace</a>
-        <a href="#" class="text-sm/6 font-semibold text-white">Company</a>
-      </div>
-      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="#" class="text-sm/6 font-semibold text-white">Log in <span aria-hidden="true">&rarr;</span></a>
-      </div>
-    </nav>
-    <el-dialog>
-      <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
-        <div tabindex="0" class="fixed inset-0 focus:outline-none">
-          <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-100/10">
-            <div class="flex items-center justify-between">
-              <a href="#" class="-m-1.5 p-1.5">
-                <span class="sr-only">Your Company</span>
-                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="" class="h-8 w-auto" />
-              </a>
-              <button type="button" command="close" commandfor="mobile-menu" class="-m-2.5 rounded-md p-2.5 text-gray-200">
-                <span class="sr-only">Close menu</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
-                  <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </button>
-            </div>
-            <div class="mt-6 flow-root">
-              <div class="-my-6 divide-y divide-white/10">
-                <div class="space-y-2 py-6">
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-white/5">Product</a>
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-white/5">Features</a>
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-white/5">Marketplace</a>
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-white/5">Company</a>
+<div x-data="{ activeSlide: 0, totalSlides: 5 }" class="relative w-full overflow-hidden">
+    <div
+        class="flex transition-transform duration-500 ease-in-out"
+        :style="`transform: translateX(-${activeSlide * 100 / totalSlides}%)`"
+    >
+        <div class="w-full flex-shrink-0 p-2">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="https://via.placeholder.com/600x400/FF5733/FFFFFF?text=Property+1" alt="Property 1" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg">Modern Condo</h3>
+                    <p class="text-gray-600 text-sm">Tagaytay | ₱5,000/night</p>
                 </div>
-                <div class="py-6">
-                  <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-white/5">Log in</a>
-                </div>
-              </div>
             </div>
-          </el-dialog-panel>
         </div>
-      </dialog>
-    </el-dialog>
-  </header>
 
-  <div class="relative isolate px-6 pt-14 lg:px-8">
-    <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-      <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"></div>
-    </div>
-    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-      <div class="hidden sm:mb-8 sm:flex sm:justify-center">
-        <div class="relative rounded-full px-3 py-1 text-sm/6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20">
-          Announcing our next round of funding. <a href="#" class="font-semibold text-indigo-400"><span aria-hidden="true" class="absolute inset-0"></span>Read more <span aria-hidden="true">&rarr;</span></a>
+        <div class="w-full flex-shrink-0 p-2">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="https://via.placeholder.com/600x400/33FF57/FFFFFF?text=Property+2" alt="Property 2" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg">Cozy Apartment</h3>
+                    <p class="text-gray-600 text-sm">Manila | ₱3,500/night</p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="text-center">
-        <h1 class="text-5xl font-semibold tracking-tight text-balance text-white sm:text-7xl">Data to enrich your online business</h1>
-        <p class="mt-8 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.</p>
-        <div class="mt-10 flex items-center justify-center gap-x-6">
-          <a href="#" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Get started</a>
-          <a href="#" class="text-sm/6 font-semibold text-white">Learn more <span aria-hidden="true">→</span></a>
+
+        <div class="w-full flex-shrink-0 p-2">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="https://via.placeholder.com/600x400/3357FF/FFFFFF?text=Property+3" alt="Property 3" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg">Spacious Villa</h3>
+                    <p class="text-gray-600 text-sm">Batangas | ₱8,000/night</p>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="w-full flex-shrink-0 p-2">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="https://via.placeholder.com/600x400/FFFF33/000000?text=Property+4" alt="Property 4" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg">Beachfront House</h3>
+                    <p class="text-gray-600 text-sm">Palawan | ₱12,000/night</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full flex-shrink-0 p-2">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="https://via.placeholder.com/600x400/AA33FF/FFFFFF?text=Property+5" alt="Property 5" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg">Urban Loft</h3>
+                    <p class="text-gray-600 text-sm">Makati | ₱6,500/night</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div aria-hidden="true" class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-      <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75"></div>
+
+    <button
+        @click="activeSlide = activeSlide === 0 ? totalSlides - 1 : activeSlide - 1"
+        class="absolute top-1/2 left-0 -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-r-lg focus:outline-none"
+    >
+        &#10094; </button>
+    <button
+        @click="activeSlide = activeSlide === totalSlides - 1 ? 0 : activeSlide + 1"
+        class="absolute top-1/2 right-0 -translate-y-1/2 bg-gray-800 bg-opacity-50 text-white p-2 rounded-l-lg focus:outline-none"
+    >
+        &#10095; </button>
+
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <template x-for="slide in totalSlides" :key="slide">
+            <button
+                @click="activeSlide = slide - 1"
+                :class="{ 'bg-blue-500': activeSlide === slide - 1, 'bg-gray-300': activeSlide !== slide - 1 }"
+                class="w-3 h-3 rounded-full"
+            ></button>
+        </template>
     </div>
-  </div>
 </div>
