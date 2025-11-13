@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Properties;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
@@ -7,6 +8,9 @@ use Livewire\Volt\Volt;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+
+Route::get('/properties/{slug}',Properties::class)
 
 // Route::get('/', function () {
     

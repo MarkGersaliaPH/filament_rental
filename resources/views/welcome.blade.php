@@ -7,16 +7,21 @@
   <title>Property App</title>
   <style>
     body { 
-      min-height: 100vh;
-      padding-bottom: 100px;
+      min-height: 100vh; 
     }
   </style>
+  
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     
   @include('navigation') 
-  @include('home-listings')
+  {{-- @include('home-listings') --}}
 
+  <div class="bg-gray-50">
+
+  @livewire('home-listing')
+  </div>
   <!-- FOOTER (Full width on desktop) -->
   <footer class="w-full bg-white shadow-inner fixed bottom-0 left-0">
     <div class="max-w-[420px] mx-auto flex justify-around py-3">

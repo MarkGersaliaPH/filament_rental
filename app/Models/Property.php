@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -88,6 +89,8 @@ class Property extends Model
         'tags' => 'array',
     ];
 
+    protected $appends = ['dispay_rent_amount'];
+
     protected $dates = [
         'available_from',
         'available_until',
@@ -150,6 +153,7 @@ class Property extends Model
         'garbage_disposal' => 'Garbage Disposal',
         'wine_cooler' => 'Wine Cooler',
     ];
+ 
 
     // Boot method for auto-generating slugs
     protected static function boot()
@@ -319,4 +323,13 @@ class Property extends Model
     public function rentals(){
         return $this->hasMany(Rental::class);
     }
+
+    public function moneyFormat($field){ 
+        return number_format($this->{$field});
+    }
+
+    public function formattedData($field,$format = "Y F d"){
+        return Carbon::parse($this->{$field})->format($format);
+    }
+ 
 }
